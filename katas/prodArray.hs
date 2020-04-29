@@ -1,6 +1,7 @@
 module Main where
 
 import Data.List
+import Criterion.Main
 
 prodArray :: [Int] -> [Int]
 prodArray lst = case zCount of
@@ -12,12 +13,21 @@ prodArray lst = case zCount of
         lParted = partition (== 0) lst
 
 
-main :: IO ()
-main = do
-  print $ prodArray [0,0,2]
-  print $ prodArray [1,2,3]
-  print $ prodArray [-1,-2,3]
-  print $ prodArray $ take 10 $ cycle [-1,0,3,4,5,6,7,8,9]
-  print $ prodArray $ take 10 $ cycle [-1,0,0,4,5,6,7,8,9]
-  print $ prodArray $ take 20 $ cycle [-1,2,3,4,5,6,7,8,9]
-  print $ prodArray $ take 3000 $ cycle [-1,0,0,4,5,6,7,8,9]
+main = defaultMain [
+  bgroup "prodArray"
+      [ bench "25 with one 0" $ whnf prodArray (take 25 $ cycle [-1,0,2,4,5,6,7,8,9])
+      , bench "25 with two 0s" $ whnf prodArray (take 25 $ cycle [-1,0,0,4,5,6,7,8,9])
+      , bench "50 with one 0" $ whnf prodArray (take 50 $ cycle [-1,0,2,4,5,6,7,8,9])
+      , bench "50 with two 0s" $ whnf prodArray (take 50 $ cycle [-1,0,0,4,5,6,7,8,9])
+      , bench "100 with one 0" $ whnf prodArray (take 100 $ cycle [-1,0,2,4,5,6,7,8,9])
+      , bench "100 with two 0s" $ whnf prodArray (take 100 $ cycle [-1,0,0,4,5,6,7,8,9])
+      , bench "200 with one 0" $ whnf prodArray (take 200 $ cycle [-1,0,2,4,5,6,7,8,9])
+      , bench "200 with two 0s" $ whnf prodArray (take 200 $ cycle [-1,0,0,4,5,6,7,8,9])
+      , bench "500 with one 0" $ whnf prodArray (take 500 $ cycle [-1,0,2,4,5,6,7,8,9])
+      , bench "500 with two 0s" $ whnf prodArray (take 500 $ cycle [-1,0,0,4,5,6,7,8,9])
+      , bench "1000 with one 0" $ whnf prodArray (take 1000 $ cycle [-1,0,2,4,5,6,7,8,9])
+      , bench "1000 with two 0s" $ whnf prodArray (take 1000 $ cycle [-1,0,0,4,5,6,7,8,9])
+      , bench "2000 with one 0" $ whnf prodArray (take 2000 $ cycle [-1,0,2,4,5,6,7,8,9])
+      , bench "2000 with two 0s" $ whnf prodArray (take 2000 $ cycle [-1,0,0,4,5,6,7,8,9])
+      ]
+  ]
